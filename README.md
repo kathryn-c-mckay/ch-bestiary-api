@@ -7,5 +7,7 @@
 This is a python/flask project.
 - Libraries can be installed using pip, like this: `pip install -r requirements.txt`
 - Dev server can be launched with `python -m flask -A bestiary.py --debug run`
+- For environment variables, you will need to create a python-dotenv file called `.env` for your local
+    - (using `.env.example` as a template)
 
 Have a nice day! C:

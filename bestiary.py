@@ -1,8 +1,16 @@
-from flask import Flask, abort
-from werkzeug.middleware.proxy_fix import ProxyFix
+import os
 from bestiary_funcs import retrieve_beast, retrieve_natures
+from dotenv import load_dotenv
+from flask import Flask, abort
+from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+# Env variables
+load_dotenv()
+BESTIARY_CORS_ALLOWED_ORIGINS = [x.strip() for x in os.environ['BESTIARY_CORS_ALLOWED_ORIGINS'].split(',')]
 
 app = Flask(__name__)
+CORS(app=app, origins=BESTIARY_CORS_ALLOWED_ORIGINS);
 
 @app.route("/species")
 def species():
