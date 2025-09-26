@@ -1,7 +1,7 @@
 import os
-from bestiary_funcs import retrieve_beast, retrieve_natures
+from bestiary_funcs import retrieve_creature, retrieve_natures
 from dotenv import load_dotenv
-from flask import Flask, abort
+from flask import Flask, abort, redirect, url_for
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -12,15 +12,25 @@ BESTIARY_CORS_ALLOWED_ORIGINS = [x.strip() for x in os.environ['BESTIARY_CORS_AL
 app = Flask(__name__)
 CORS(app=app, origins=BESTIARY_CORS_ALLOWED_ORIGINS);
 
+# deprecated.
 @app.route("/species")
 def species():
-    return retrieve_natures()
+    return redirect('/natures', code=301)
 
+# deprecated.
 @app.route("/beast/<string:beast_key>")
 def beast(beast_key):
-    beast = retrieve_beast(beast_key)
-    if beast is not None:
-        return beast
+    return redirect(url_for('creature', creature_key=beast_key), code=301)
+
+@app.route("/natures")
+def natures():
+    return retrieve_natures()
+
+@app.route("/creature/<string:creature_key>")
+def creature(creature_key):
+    creature = retrieve_creature(creature_key)
+    if creature is not None:
+        return creature
     else:
         abort(404)
 
